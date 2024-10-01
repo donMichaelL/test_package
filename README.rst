@@ -6,9 +6,13 @@ theTrial
    :target: https://pypi.org/project/TODO
    :alt: pypi
 
-.. image:: https://img.shields.io/badge/build-passing-%23355E3B
-   :target: https://github.com/donMichaelL/TODO/actions/workflows/main.yaml
-   :alt: build
+.. image:: https://github.com/donMichaelL/test_package/actions/workflows/main.yaml/badge.svg?branch=main
+    :target: https://github.com/donMichaelL/test_package/actions/workflows/main.yaml
+    :alt: Main Workflow Status
+
+.. image:: https://img.shields.io/github/actions/workflow/status/donMichaelL/test_package/main.yaml.svg?branch=main&style=for-the-badge
+    :target: https://github.com/donMichaelL/test_package/actions/workflows/main.yaml
+    :alt: Main Workflow Status
 
 .. STATIC
 

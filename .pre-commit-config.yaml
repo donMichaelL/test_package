@@ -91,5 +91,7 @@ repos:
         name: Run Tests and Coverage
         entry: pytest --cov=src --cov-fail-under=70
         language: python
+        additional_dependencies:
+          - pytest-cov
         types: [python]
         stages: [push]

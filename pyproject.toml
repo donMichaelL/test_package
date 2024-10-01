@@ -1,3 +1,6 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [ "setuptools>=61" ]
+
+[tool.bandit.assert_used]
+skips = [ '*_test.py', '*/test_*.py' ]

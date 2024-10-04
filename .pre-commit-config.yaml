@@ -95,3 +95,4 @@ repos:
           - pytest-cov
         types: [python]
         stages: [push]
+        pass_filenames: false

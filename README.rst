@@ -2,6 +2,8 @@
 theTrial
 ========
 
+.. DYNAMIC
+
 .. image:: https://img.shields.io/pypi/v/TODO
    :target: https://pypi.org/project/TODO
    :alt: pypi

@@ -12,12 +12,17 @@ check-main-branch:
 		exit 1; \
 	fi
 
-bump: check-main-branch
+bump: check-main-branch precommit test
 	@if [ -z "$(NEW_VERSION)" ]; then \
 		bump-my-version show-bump; \
 		echo "Execut: make bump NEW_VERSION=x.x.x"; \
 		exit 1; \
 	fi
 	bump-my-version bump --new-version $(NEW_VERSION)
+
+push_main: bump
 	git push origin main --follow-tags
 	echo "Version bumped to $(NEW_VERSION) and pushed to GitHub."
+
+# git-release:
+# pypi release:

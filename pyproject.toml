@@ -10,7 +10,6 @@ version = "0.1.2"
 description = "A Python microframework for easy communication with Kafka."
 readme = "README.rst"
 keywords = [ "consumer", "kafka", "microframework", "producer", "python" ]
-license = "LICENSE"
 authors = [
   { name = "Michael Loukeris", email = "mloukeris@di.uoa.gr" },
 ]

@@ -24,5 +24,7 @@ push_main: bump
 	git push origin main --follow-tags
 	echo "Version bumped to $(NEW_VERSION) and pushed to GitHub."
 
-# git-release:
-# pypi release:
+pypi_release: push_main
+	python -m build --sdist --wheel .
+	twine upload dist/*
+	echo "Released version $(NEW_VERSION) to PyPI."

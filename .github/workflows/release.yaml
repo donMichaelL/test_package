@@ -1,4 +1,4 @@
-name: Main
+name: Release
 
 on:
   workflow_dispatch:
@@ -87,10 +87,16 @@ jobs:
   bump:
     name: Bump version
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    needs: coverage
+
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
+
+      - name: Set up Git user
+        run: |
+          git config --local user.email "autocommit@gmail.com"
+          git config --local user.name "AutoCommit"
 
       - name: Bump version
         id: bump

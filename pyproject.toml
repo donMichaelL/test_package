@@ -38,6 +38,8 @@ dependencies = [
 ]
 urls = { Changelog = "https://github.com/donMichaelL/theTrial", Homepage = "https://github.com/donMichaelL/theTrial", Twitter = "https://twitter.com/MichaelLoukeris" }
 
+scripts.theTrial = "theTrial.cli:main"
+
 [tool.isort]
 force_single_line = true
 profile = "black"
@@ -67,6 +69,10 @@ message = "chore:  Bump version {current_version} → {new_version}"
 
 [[tool.bumpversion.files]]
 filename = "src/theTrial/__init__.py"
+search = "{current_version}"
+
+[[tool.bumpversion.files]]
+filename = "src/theTrial/cli.py"
 search = "{current_version}"
 
 [[tool.bumpversion.files]]

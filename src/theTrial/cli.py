@@ -13,14 +13,14 @@ def main():
 @click.option("--name", default="app", help="Name of the application.")
 def start_command(name: str) -> None:
     """Initialize a new project structure."""
-    pass
+    click.echo(f"[INFO] {name} files are created.")
 
 
 @click.command("run", short_help="Run the application.")
 @click.option("-v", "--verbose", is_flag=True, help="Enable verbose logging.")
 def run_command(verbose):
     """Run the application."""
-    pass
+    click.echo("[INFO] The application is running.")
 
 
 main.add_command(start_command)

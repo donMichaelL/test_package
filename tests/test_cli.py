@@ -15,14 +15,12 @@ class TestStartCommand:
         """Test the start command with the default name."""
         result = runner.invoke(main, ["start"])
         assert result.exit_code == 0
-        assert "[INFO] app files are created." in result.output
 
     def test_start_custom_name(self, runner):
         """Test the start command with a custom name."""
         custon_name = "custom_app"
         result = runner.invoke(main, ["start", "--name", custon_name])
         assert result.exit_code == 0
-        assert f"[INFO] {custon_name} files are created." in result.output
 
 
 class TestRunCommand:

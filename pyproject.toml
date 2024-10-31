@@ -40,6 +40,9 @@ urls = { Changelog = "https://github.com/donMichaelL/theTrial", Homepage = "http
 
 scripts.theTrial = "theTrial.cli:main"
 
+[tool.black]
+line-length = 79
+
 [tool.isort]
 force_single_line = true
 profile = "black"

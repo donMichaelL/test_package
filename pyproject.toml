@@ -90,11 +90,8 @@ enable_error_code = [
   "truthy-bool",
 ]
 mypy_path = "src/"
-warn_unreachable = true
-
-[[tool.mypy.overrides]]
 ignore_errors = true
-mypy_path = "src/"
+warn_unreachable = true
 
 [tool.bandit.assert_used]
 skips = [ '*_test.py', '*/test_*.py' ]

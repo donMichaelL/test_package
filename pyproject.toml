@@ -41,7 +41,8 @@ urls = { Changelog = "https://github.com/donMichaelL/theTrial", Homepage = "http
 scripts.theTrial = "theTrial.cli:main"
 
 [tool.black]
-line-length = 79
+line-length = 119
+target-version = [ "py311" ]
 
 [tool.isort]
 force_single_line = true

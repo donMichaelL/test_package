@@ -7,3 +7,13 @@ class AppImportError(Exception):
     Custom exception for errors related to importing the
     user-defined application.
     """
+
+
+class MissingSerializeMethodError(Exception):
+    def __init__(self, obj):
+        message = (
+            f"The object of type '{type(obj).__name__}' does not "
+            "have a 'serializer' method. Please define a 'serialize' method "
+            "in your class."
+        )
+        super().__init__(message)

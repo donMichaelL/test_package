@@ -32,9 +32,7 @@ def get_module_spec(script_path):
     module_name = os.path.splitext(os.path.basename(script_path))[0]
     spec = importlib.util.spec_from_file_location(module_name, script_path)
     if not spec or not spec.loader:
-        raise AppImportError(
-            f"Cannot find a valid module specification for '{script_path}'."
-        )
+        raise AppImportError(f"Cannot find a valid module specification for '{script_path}'.")
     return spec
 
 
@@ -44,26 +42,18 @@ def load_module_from_spec(spec):
     try:
         spec.loader.exec_module(user_module)
     except Exception as e:
-        raise AppImportError(
-            f"Failed to import module '{spec.name}' from '{spec.origin}': {e}"
-        )
+        raise AppImportError(f"Failed to import module '{spec.name}' from '{spec.origin}': {e}")
     return user_module
 
 
 def get_app_instance(user_module):
     """Retrieve and validate the 'app' object from the user-defined module."""
     if not hasattr(user_module, "app"):
-        raise AppImportError(
-            "No 'app' instance found in the script. "
-            "Make sure you define 'app = TheTrial()'."
-        )
+        raise AppImportError("No 'app' instance found in the script. " "Make sure you define 'app = TheTrial()'.")
 
     app = getattr(user_module, "app")  # noqa: B009
     if not isinstance(app, TheTrial):
-        raise AppImportError(
-            f"The 'app' object in '{user_module.__name__}' "
-            "is not an instance of TheTrial."
-        )
+        raise AppImportError(f"The 'app' object in '{user_module.__name__}' " "is not an instance of TheTrial.")
 
     return app
 
@@ -105,9 +95,7 @@ class ChangeHandler(FileSystemEventHandler):
     type=str,
     help="Specify the application script to run (e.g., --app dummy.py).",
 )
-@click.option(
-    "--reload", is_flag=True, help="Reload the application on code changes."
-)
+@click.option("--reload", is_flag=True, help="Reload the application on code changes.")
 @click.option("-v", "--verbose", is_flag=True, help="Enable verbose logging.")
 def run_command(app, reload, verbose):
     """Run the application."""

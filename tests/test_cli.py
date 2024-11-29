@@ -1,10 +1,46 @@
-# import pytest
-# from click.testing import CliRunner
-# from theTrial.cli import main
-# @pytest.fixture
-# def runner():
-#     """Fixture that provides a Click CLI runner."""
-#     return CliRunner()
+from unittest.mock import patch
+
+import pytest
+from click.testing import CliRunner
+
+from theTrial.cli import init_command
+from theTrial.utils import file_utils
+
+
+@pytest.fixture(scope="module")
+def runner():
+    """Fixture that provides a Click CLI runner."""
+    return CliRunner()
+
+
+class TestInitCommand:
+    """Test suite for the init_command CLI function."""
+
+    @patch("theTrial.utils.cli_utils.create_file", return_value="OK")
+    def test_create_file_called_with_default_name(self, mock_create_file, runner):
+        """Test that the create_file function is called with default arguments"""
+        runner.invoke(init_command)
+
+        mock_create_file.assert_called_once_with(path=".", filename="app.py", content=file_utils.DEFAULT_APP_CONTENT)
+
+    @patch("theTrial.utils.cli_utils.create_file", return_value="OK")
+    def test_create_file_called_with_correct_arguments(self, mock_create_file, runner):
+        """Test that the create_file function is called with the correct arguments."""
+        runner.invoke(init_command, ["--name", "test_app"])
+
+        mock_create_file.assert_called_once_with(
+            path=".", filename="test_app.py", content=file_utils.DEFAULT_APP_CONTENT
+        )
+
+    @patch("theTrial.utils.cli_utils.create_file", return_value="OK")
+    def test_success_message_displayed(self, mock_create_file, runner):
+        """Test that the success message is displayed when a file is successfully created."""
+        result = runner.invoke(init_command, ["--name", "test_app"])
+
+        assert result.exit_code == 0
+        assert "✅  Successfully created 'test_app.py' with the default app structure." in result.output
+
+
 # class TestStartCommand:
 #     def test_start_default(self, runner):
 #         """Test the start command with the default name."""

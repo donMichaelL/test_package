@@ -1,7 +1,7 @@
 import pytest
 
 from theTrial import exceptions
-from theTrial.utils.decorated_function_utils import validate_decorated_function
+from theTrial.utils import validate_decorated_function
 
 
 class TestValidateDecoratedFunction:

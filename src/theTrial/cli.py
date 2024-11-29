@@ -8,6 +8,8 @@ from watchdog.observers import Observer
 
 from .exceptions import AppImportError
 from .exceptions import ScriptPathError
+from .utils import cli_utils
+from .utils import file_utils
 from theTrial.app import TheTrial
 
 __version__ = "2.0.1"
@@ -71,13 +73,6 @@ def import_user_app(script_path):
     return get_app_instance(user_module)
 
 
-@click.command("init", short_help="Init your application.")
-@click.option("--name", default="app", help="Name of the application.")
-def init_command(name: str) -> None:
-    """Initialize a new project structure."""
-    click.echo(f"[INFO] Initialize {name} project.")
-
-
 class ChangeHandler(FileSystemEventHandler):
     def __init__(self, script_path, run_app):
         self.script_path = script_path
@@ -134,6 +129,20 @@ def run_command(app, reload, verbose):
 
     else:
         run_app()
+
+
+@click.command("init", short_help="Initialize your application.")
+@click.option("--name", default="app", show_default=True, help="Name of the application.")
+def init_command(name: str) -> None:
+    """Initialize a new project structure."""
+    click.echo(f"🚀  Initialize {name} project.")
+    filename = f"{name}.py"
+    cli_utils.create_file(path=".", filename=filename, content=file_utils.DEFAULT_APP_CONTENT)
+    click.secho(f"✅  Successfully created '{filename}' with the default app structure.")
+    click.secho("\nNext Steps:", bold=True)
+    click.secho(f"  - Edit '{filename}' to customize your application.")
+    click.secho("  - Run your app with theTrial run command.\n")
+    click.secho("🎉  Happy Coding!", bold=True)
 
 
 @click.group(help=f"theTrial CLI Tool v{__version__}")

@@ -72,19 +72,21 @@ Logging Configuration
 CLI Commands
 ------------
 
-`theTrial` includes a set of CLI commands to set up and manage your projects.
+`theTrial` includes a set of CLI commands to set up and manage your project.
 
-Start Command
-^^^^^^^^^^^^^
+init
+^^^^
 
-To initialize a new project structure, use the `start` command:
+Initialize a new project.
 
 .. code-block:: bash
 
-   theTrial start --name [YOUR_APP_NAME]
+   theTrial init [OPTIONS]
 
-By default, the main app file will be named `app.py`. You can specify a different name using the ``--name`` option.
+**Options**:
 
-This command will:
+- ``--name [YOUR_APP_NAME]``: Specify the name of the main app file. [default: ``app``]
 
-- Create the main app file (`[YOUR_APP_NAME].py`).
+This command:
+
+- creates the main app file (``[YOUR_APP_NAME].py``).

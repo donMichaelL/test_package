@@ -22,16 +22,10 @@ class MissingSerializeMethodError(Exception):
 class FunctionValidationError(Exception):
     """Base exception for function validation errors."""
 
-    pass
-
 
 class MissingParameterAnnotationError(FunctionValidationError):
     """Raised when the first parameter lacks a type annotation."""
 
-    pass
-
 
 class MissingDesirializerMethodError(FunctionValidationError):
     """Raised when the annotated data class lacks a desirializer method."""
-
-    pass

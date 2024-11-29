@@ -1,4 +1,3 @@
-import importlib.util
 import os
 import sys
 
@@ -6,71 +5,10 @@ import click
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
-from .exceptions import AppImportError
-from .exceptions import ScriptPathError
 from .utils import cli_utils
 from .utils import file_utils
-from theTrial.app import TheTrial
 
 __version__ = "2.0.1"
-
-
-def get_script_path(app):
-    script_path = app or os.getenv("THE_TRIAL_APP")
-
-    if not script_path:
-        raise ScriptPathError(
-            "No script specified. Provide a script using --app option "
-            "or set the environment variable 'THE_TRIAL_APP'."
-        )
-    if not os.path.exists(script_path):
-        raise ScriptPathError(f"The script '{script_path}' does not exist.")
-
-    return script_path
-
-
-def get_module_spec(script_path):
-    """Get the module specification for a given script path."""
-    module_name = os.path.splitext(os.path.basename(script_path))[0]
-    spec = importlib.util.spec_from_file_location(module_name, script_path)
-    if not spec or not spec.loader:
-        raise AppImportError(f"Cannot find a valid module specification for '{script_path}'.")
-    return spec
-
-
-def load_module_from_spec(spec):
-    """Load a module from a given module spec."""
-    user_module = importlib.util.module_from_spec(spec)
-    try:
-        spec.loader.exec_module(user_module)
-    except Exception as e:
-        raise AppImportError(f"Failed to import module '{spec.name}' from '{spec.origin}': {e}")
-    return user_module
-
-
-def get_app_instance(user_module):
-    """Retrieve and validate the 'app' object from the user-defined module."""
-    if not hasattr(user_module, "app"):
-        raise AppImportError("No 'app' instance found in the script. " "Make sure you define 'app = TheTrial()'.")
-
-    app = getattr(user_module, "app")  # noqa: B009
-    if not isinstance(app, TheTrial):
-        raise AppImportError(f"The 'app' object in '{user_module.__name__}' " "is not an instance of TheTrial.")
-
-    return app
-
-
-def import_user_app(script_path):
-    """
-    Dynamically import the user-defined module and return the 'app' object
-    if it exists.
-    """
-    script_dir = os.path.dirname(script_path)
-    sys.path.insert(0, script_dir)
-
-    spec = get_module_spec(script_path)
-    user_module = load_module_from_spec(spec)
-    return get_app_instance(user_module)
 
 
 class ChangeHandler(FileSystemEventHandler):
@@ -85,15 +23,13 @@ class ChangeHandler(FileSystemEventHandler):
 
 
 @click.command("run", short_help="Run the application.")
-@click.option(
-    "--app",
-    type=str,
-    help="Specify the application script to run (e.g., --app dummy.py).",
-)
+@click.option("--app", default="app.py", show_default=True, help="The entry point of the application.")
 @click.option("--reload", is_flag=True, help="Reload the application on code changes.")
 @click.option("-v", "--verbose", is_flag=True, help="Enable verbose logging.")
 def run_command(app, reload, verbose):
     """Run the application."""
+
+    click.echo(f"theTrial version v{__version__}")
 
     def extra_message(message):
         """Helper function for verbose logging."""
@@ -101,14 +37,15 @@ def run_command(app, reload, verbose):
             click.echo(message)
 
     def run_app():
-        script_path = get_script_path(app)
-        click.echo(f"[INFO] Script Path: {script_path}")
-        app_instance = import_user_app(script_path)
-        click.echo("[INFO] The application is running.")
+        script_path = cli_utils.check_script_existence(app)
+        click.echo(f"Entry point: {script_path}")
+        app_instance = cli_utils.import_user_app(script_path)
+        click.echo("The application is ready.")
+        click.echo("Quit with CONTROL-C.\n")
         app_instance.run()
 
     if reload:
-        script_path = get_script_path(app)
+        script_path = cli_utils.check_script_existence(app)
         event_handler = ChangeHandler(script_path, run_app)
         observer = Observer()
         observer.schedule(

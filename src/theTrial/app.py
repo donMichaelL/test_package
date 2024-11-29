@@ -6,7 +6,10 @@ from . import kafka
 from .constants import config_consumers
 from .constants import config_producers
 from .exceptions import MissingSerializeMethodError
+from .log import get_logger
 from .utils import validate_decorated_function
+
+logger = get_logger("app")
 
 
 class TheTrial:
@@ -53,6 +56,10 @@ class TheTrial:
 
     def run(self):
         """Run the application, prompting for input."""
+        if not self.intopic_functions:
+            logger.info("No functions defined for the 'intopic_functions'.")
+            return
+
         self.consumer.consume(self.intopic_functions)
         # for func in self.outopic_functions:
         #     func()

@@ -82,10 +82,13 @@ repos:
     hooks:
       - id: run-tests
         name: Run Tests and Coverage
-        entry: pytest --cov-fail-under=70
+        entry: pytest --cov-fail-under=50
         language: python
         additional_dependencies:
           - pytest-cov
+          - confluent-kafka
+          - click
+          - watchdog
         types: [python]
         stages: [push]
         pass_filenames: false

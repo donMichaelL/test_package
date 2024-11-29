@@ -90,3 +90,18 @@ Initialize a new project.
 This command:
 
 - creates the main app file (``[YOUR_APP_NAME].py``).
+
+run
+^^^^
+
+Run the application.
+
+.. code-block:: bash
+
+   theTrial run [OPTIONS]
+
+**Options**:
+
+- ``--app [YOUR_APP_NAME_SCRIPT]``: The entry point of the application. [default: ``app.py``]
+- ``--reload``: Reload the application automatically on code changes.
+- ``-v``: Enable verbose logging.

@@ -1,27 +1,10 @@
 from confluent_kafka import Consumer
 from confluent_kafka import KafkaError
-from confluent_kafka.cimpl import Message
 
 from ..log import get_logger
+from ..utils import call_handlers
 
 logger = get_logger("kafka-consumer")
-
-
-def call_handlers(func_map, msg: Message) -> None:
-    topic, decoded_msg = msg.topic(), msg.value().decode("utf-8")
-
-    for func, model in func_map[topic]:
-        try:
-            instance = model.from_json(decoded_msg)
-            additional_args = {
-                "topic": msg.topic(),
-                "key": msg.key().decode("utf-8") if msg.key() else None,
-                "partition": msg.partition(),
-                "offset": msg.offset(),
-            }
-            func(instance, **additional_args)
-        except Exception as e:
-            logger.error(f"Error processing message from topic '{topic}': {e}")
 
 
 class KafkaConsumer:

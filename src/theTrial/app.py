@@ -1,14 +1,12 @@
 from collections import defaultdict
 from collections.abc import Callable
 from functools import wraps
-from inspect import signature
-from typing import Any
-from typing import Tuple
 
 from . import kafka
 from .constants import config_consumers
 from .constants import config_producers
 from .exceptions import MissingSerializeMethodError
+from .utils import validate_decorated_function
 
 
 class TheTrial:
@@ -18,30 +16,14 @@ class TheTrial:
         self.outopic_functions = []
         self.intopic_functions = defaultdict(list)
 
-    def _validate_intopic_function(self, func: Callable) -> Tuple[Callable, Any]:
-        """
-        Validate the function passed to the intopic decorator.
-        """
-        sig = signature(func)
-        params = list(sig.parameters.values())
-        if not params:
-            raise ValueError("Function must have at least one parameter")
-
-        first_param = params[0]
-        model = first_param.annotation
-        if model is first_param.empty:
-            raise ValueError("First parameter must have a type annotation")
-
-        return func, model
-
     def intopic(self, topic: str) -> Callable:
         """
         Decorator to register a function to consume messages from a specific Kafka topic.
         """
 
         def decorator(func: Callable) -> Callable:
-            func, model = self._validate_intopic_function(func)
-            self.intopic_functions[topic].append((func, model))
+            func, data_class = validate_decorated_function(func)
+            self.intopic_functions[topic].append((func, data_class))
             return func
 
         return decorator

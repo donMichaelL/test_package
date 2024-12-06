@@ -15,7 +15,7 @@ check-main-branch:
 bump: check-main-branch precommit test
 	@if [ -z "$(NEW_VERSION)" ]; then \
 		bump-my-version show-bump; \
-		echo "Execut: make bump NEW_VERSION=x.x.x"; \
+		echo "Execute: make bump NEW_VERSION=x.x.x"; \
 		exit 1; \
 	fi
 	bump-my-version bump --new-version $(NEW_VERSION)

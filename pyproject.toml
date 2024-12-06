@@ -35,7 +35,9 @@ dependencies = [
   "click",
   "confluent-kafka",
   "environs",
+  "watchdog",
 ]
+
 urls = { Changelog = "https://github.com/donMichaelL/theTrial", Homepage = "https://github.com/donMichaelL/theTrial", Twitter = "https://twitter.com/MichaelLoukeris" }
 
 scripts.theTrial = "theTrial.cli:main"
